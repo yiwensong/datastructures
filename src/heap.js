@@ -11,27 +11,10 @@ const MIN_SIZE = 64;
 
 /**
  * Makes an empty heap. All heaps are min heaps. Deal with it.
- *
- * @param   items       a list of items to add.
- * @param   priorities  a list of priorities.
  */
-function Heap(items, priorities) {
-  if (items == undefined) {
-    this.data = new Array(MIN_SIZE);
-    this.size = 0;
-    return;
-  }
-  if (items.length != priorities.length) throw 'array length mismatch';
-  this.size = items.length;
-  this.data = new Array(Math.ceil(Math.log(this.length)/Math.log(2)));
-  // Initialize
-  for (var i=0;i<this.size;i++) {
-    this.data[i] = [items[i], priorities[i]];
-  }
-  // Push the fatties down
-  for (var i=this.size-1;i>=0;i--) {
-    this.parentswap(i);
-  }
+function Heap() {
+  this.data = new Array(MIN_SIZE);
+  this.size = 0;
 };
 
 
@@ -108,7 +91,7 @@ Heap.prototype.dequeue = function () {
  */
 Heap.prototype.better_dequeue = function () {
   var priority = this.data[0][1];
-  return [priority, this.dequeue()];
+  return [this.dequeue(), priority];
 };
 
 
@@ -140,5 +123,18 @@ Heap.prototype.test = function () {
     console.log(this.better_dequeue());
   }
 };
+
+
+var obj = [1,2,3,4,5,6,7,8,9,10];
+var pri = [5,4,3,2,1,6,7,8,9,0];
+var h = new Heap();
+for(var i=0;i<10;i++){
+  h.enqueue(obj[i], pri[i]);
+}
+for(var i=0;i<10;i++){
+  console.log(h.better_dequeue());
+  // console.log(h);
+}
+h.test();
 
 module.exports = Heap;
