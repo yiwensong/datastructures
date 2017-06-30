@@ -7,6 +7,7 @@
 
 const EXPAND_RATIO = .75;
 const CONTRACT_RATIO = .25;
+const MIN_SIZE = 64;
 
 /**
  * Makes an empty heap. All heaps are min heaps. Deal with it.
@@ -16,7 +17,7 @@ const CONTRACT_RATIO = .25;
  */
 function Heap(items, priorities) {
   if (items == undefined) {
-    this.data = new Array(64);
+    this.data = new Array(MIN_SIZE);
     this.size = 0;
     return;
   }
@@ -74,7 +75,8 @@ Heap.prototype.enqueue = function (item, priority) {
  * Returns and removes the front of the heap.
  */
 Heap.prototype.dequeue = function () {
-  if (this.data.length * CONTRACT_RATIO > this.size - 1) {
+  if (this.data.length * CONTRACT_RATIO > this.size - 1 
+      && this.data.length > MIN_SIZE) {
     this.data = this.data.slice(0, this.data.length/2);
   }
   var entry = this.data[0][0];
